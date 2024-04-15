@@ -5,13 +5,47 @@
 const { mongoose } = require('../configs/dbConnection')
 const passwordEncrypt = require('../helpers/passwordEncrypt')
 /* ------------------------------------------------------- */
-
+// USER MODEL
+/* ------------------------------------------------------- *
+{
+    "username": "admin",
+    "password": "aA*123456",
+    "email": "admin@site.com",
+    "firstName": "admin",
+    "lastName": "admin",
+    "isActive": true,
+    "isStaff": true,
+    "isAdmin": true
+}
+{
+    "username": "staff",
+    "password": "aA*123456",
+    "email": "staff@site.com",
+    "firstName": "staff",
+    "lastName": "staff",
+    "isActive": true,
+    "isStaff": true,
+    "isAdmin": false
+}
+{
+    "username": "test",
+    "password": "aA*123456",
+    "email": "test@site.com",
+    "firstName": "test",
+    "lastName": "test",
+    "isActive": true,
+    "isStaff": false,
+    "isAdmin": false
+}
+/* ------------------------------------------------------- */
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         trim: true,
         required: true,
-        unique: true
+        unique: true,
+        index: true
+        //minlength maxlength verilebilir
     },
     password: {
         type: String,
@@ -30,6 +64,7 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         required: [true, 'Email field must be required'],
         unique: [true, 'Email field must be unique'],
+        index: true,
         validate: [
             (email) => { 
                 const regexEmailCheck=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
