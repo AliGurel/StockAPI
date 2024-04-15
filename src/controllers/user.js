@@ -35,6 +35,8 @@ module.exports = {
             `
         */
         //user sadece kendi kaydını görebilir
+        //gelen kullanıcı adminse filtreleme yapma tüm kullanıcıları göster
+        //admin değilse sadece kendi kaydını göster demek
         const customFilter = req.user?.isAdmin ? {} : { _id: req.user._id }
 
         const data = await res.getModelList(User, customFilter)
@@ -149,7 +151,7 @@ module.exports = {
         res.status(202).send({
             error: false,
             data,
-            new: await User.findOne({ _id: req.params.id })
+            new: await User.findOne(customFilter)//başkasının bilgisini göremesin
         })
 
     },
@@ -159,13 +161,19 @@ module.exports = {
             #swagger.tags = ["Users"]
             #swagger.summary = "Delete User"
         */
+        //admin dahil kimse kendini silemesin diyebiliriz;
+        if (req.user.id != req.params.id) {
+            const data = await User.deleteOne({ _id: req.params.id })
 
-        const data = await User.deleteOne({ _id: req.params.id })
+            res.status(data.deletedCount ? 204 : 404).send({
+                error: !data.deletedCount,
+                data
+            })
 
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            data
-        })
+        }else {
+            res.errorStatusCode = 403
+            throw new Error("You cannot delete your own account")
+        }
 
     },
 }

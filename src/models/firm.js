@@ -19,8 +19,8 @@ const FirmSchema = new mongoose.Schema({
         validate: {
             validator: function (value) {
                 // Use validator.js library for phone number validation
-                //   return validator.isMobilePhone(value, 'any');
-                return validator.isMobilePhone(value, 'tr-TR');
+                return validator.isMobilePhone(value, 'any');
+                // return validator.isMobilePhone(value, 'tr-TR');
             },
             message: 'Invalid phone number'
         },

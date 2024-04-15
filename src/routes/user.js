@@ -12,7 +12,9 @@ const permissions = require('../middlewares/permissions')
 // URL: /users
 
 router.route('/')
-    .get(permissions.isAdmin, user.list)
+    //admin kontrolünü user controller list de yaptığı için isAdmin demedik burda
+    // .get(permissions.isAdmin, user.list)
+    .get(permissions.isLogin, user.list)
     .post(user.create) // AllowAny
 
 router.route('/:id')

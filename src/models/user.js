@@ -96,5 +96,10 @@ const UserSchema = new mongoose.Schema({
     collection: 'users', 
     timestamps: true
 })
+//https://mongoosejs.com/docs/middleware.html#pre
+//pre middleware ler
+//hocanın tavsiyesi set ve validasyon işlemini yukarda field da yapmamız mış, pre yi göstermek için burda yapmış
+
+
 
 module.exports = mongoose.model("User",UserSchema)
