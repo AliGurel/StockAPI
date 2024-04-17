@@ -143,6 +143,7 @@ module.exports = {
 
         // Admin olmayan, isStaff ve isAdmin durumunu değiştiremez.
         if (!req.user.isAdmin) {
+            delete req.body.isActive
             delete req.body.isStaff
             delete req.body.isAdmin
         }

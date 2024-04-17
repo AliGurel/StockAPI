@@ -33,6 +33,7 @@ module.exports = {
     },
 
     create: async (req, res) => {
+
         /*
             #swagger.tags = ["Categories"]
             #swagger.summary = "Create Category"
@@ -40,7 +41,7 @@ module.exports = {
                 in: 'body',
                 required: true,
                 schema: {
-                    "name": "test",
+                    "name": "Category 1"
                 }
             }
         */
@@ -69,6 +70,7 @@ module.exports = {
     },
 
     update: async (req, res) => {
+
         /*
             #swagger.tags = ["Categories"]
             #swagger.summary = "Update Category"
@@ -76,12 +78,7 @@ module.exports = {
                 in: 'body',
                 required: true,
                 schema: {
-                    "Categoryname": "test",
-                    "password": "1234",
-                    "email": "test@site.com",
-                    "isActive": true,
-                    "isStaff": false,
-                    "isAdmin": false,
+                    "name": "Category 1"
                 }
             }
         */
@@ -104,7 +101,7 @@ module.exports = {
         const data = await Category.deleteOne({ _id: req.params.id })
 
         res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
+            error: !data.deletedCount,//silme işlemi gerçekleşmemişse true versin
             data
         })
 

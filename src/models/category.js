@@ -10,7 +10,8 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        unique: true
+        unique: true,
+        set:(name) => name.toUpperCase()//gelen tüm kayıtlar büyük harfe çevrilsin ki aynı kategori farklı zamanalrda eklenmesin
     }
 },{
     collection: "categories",
