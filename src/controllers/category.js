@@ -60,12 +60,25 @@ module.exports = {
             #swagger.summary = "Get Single Category"
         */
 
-        const data = await Category.findOne({_id: req.params.id})
+        if(req.params?._id) {
+            //url de id varsa tek kaydı listele
+            const data = await Category.findOne({_id: req.params.id})
 
-        res.status(200).send({
-            error: false,
-            data
-        })
+            res.status(200).send({
+                error: false,
+                data
+            })
+        }else{
+            //id yoksa tüm kayıtları listelei yukarıdaki list ile aynı içerik bu
+            const data = await res.getModelList(Category)
+        
+            res.status(200).send({
+                error: false,
+                details: await res.getModelListDetails(Category),
+                data
+            })
+        }
+
 
     },
 
