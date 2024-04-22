@@ -1,35 +1,37 @@
 "use strict"
 /* -------------------------------------------------------
-    NODEJS EXPRESS | StockAPI
+    NODEJS EXPRESS | CLARUSWAY FullStack Team
 ------------------------------------------------------- */
-// User Controller:
+// Firm Controller:
 
-const Firm = require('../models/firm')
+const Firm = require('../models/firm');
 
 module.exports = {
+
     list: async (req, res) => {
         /*
             #swagger.tags = ["Firms"]
             #swagger.summary = "List Firms"
             #swagger.description = `
-                You can send query with endpoint for search[], sort[], page and limit.
+                You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.
                 <ul> Examples:
                     <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
                     <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
-                    <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
-                    <li>URL/?<b>page=2&limit=1</b></li>
+                    <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>
+                    <li>URL/?<b>limit=10&page=1</b></li>
                 </ul>
             `
         */
 
         const data = await res.getModelList(Firm)
-        //console.log("user bilgisi:", req.user);
+
         res.status(200).send({
             error: false,
             details: await res.getModelListDetails(Firm),
             data
         })
     },
+
     create: async (req, res) => {
         /*
             #swagger.tags = ["Firms"]
@@ -38,10 +40,7 @@ module.exports = {
                 in: 'body',
                 required: true,
                 schema: {
-                    "name": "test",
-                    "phone" :"905341234565",
-                    "address" : "deneme mah test sk 10/4",
-                    "images" : []
+                    "name": "Firm 1"
                 }
             }
         */
@@ -60,12 +59,27 @@ module.exports = {
             #swagger.summary = "Get Single Firm"
         */
 
-        const data = await Firm.findOne({ _id: req.params.id })
+        console.log('read run')
 
-        res.status(200).send({
-            error: false,
-            data
-        })
+        if (req.params?.id) {
+        // Single:
+            const data = await Firm.findOne({ _id: req.params.id })
+
+            res.status(200).send({
+                error: false,
+                data
+            })
+
+        } else {
+        // All:
+            const data = await res.getModelList(Firm)
+
+            res.status(200).send({
+                error: false,
+                details: await res.getModelListDetails(Firm),
+                data
+            })
+        }
 
     },
 
@@ -77,10 +91,11 @@ module.exports = {
                 in: 'body',
                 required: true,
                 schema: {
-                    $ref: '#/definitions/Firm'
+                    "name": "Firm 1"
                 }
             }
         */
+
         const data = await Firm.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
 
         res.status(202).send({
@@ -88,7 +103,6 @@ module.exports = {
             data,
             new: await Firm.findOne({ _id: req.params.id })
         })
-
     },
 
     delete: async (req, res) => {
@@ -105,4 +119,5 @@ module.exports = {
         })
 
     },
+
 }

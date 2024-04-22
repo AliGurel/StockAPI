@@ -14,8 +14,8 @@ const BrandSchema = new mongoose.Schema({
         unique: true
     },
     image: {
-        type: Array,
-        default: []
+        type: String,
+        trim: true
     },
 },{
     collection: "brands",

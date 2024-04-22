@@ -23,8 +23,8 @@ const permissions = require('../middlewares/permissions')
 
 //yukardkailerin yerine aşağıdaki haliyle de kullanabiliriz 
 router.route('/(:id)?') // id olsa da olur olmasa da olur komutu bu
+    .post(permissions.isAdmin, category.create)
     .get(permissions.isStaff, category.read)
-    .post(permissions.isAdmin,category.create)
     .put(permissions.isAdmin, category.update)
     .patch(permissions.isAdmin, category.update)
     .delete(permissions.isAdmin, category.delete)
