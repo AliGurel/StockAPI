@@ -30,11 +30,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        unique: true
     },
     quantity: {
         type: Number,
-        default: 1
+        default: 0
     }
 },{
     collection: "products",
