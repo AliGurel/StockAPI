@@ -23,7 +23,7 @@ module.exports = {
                 </ul>
             `
         */
-
+        //güzel populate
         const data = await res.getModelList(Sale, {}, [
             { path: 'userId', select: 'username email' },
             'brandId',

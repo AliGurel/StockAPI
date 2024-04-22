@@ -23,11 +23,12 @@ module.exports = {
                 </ul>
             `
         */
-
+        // Güzel populate, filtreli şekilli
         const data = await res.getModelList(Purchase, {}, [
             { path: 'userId', select: 'username email' },
             { path: 'firmId', select: 'name image' },
-            'brandId',
+            'brandId', // brand ıd komple gelsin 
+            //nested populate yaptı aşağıda
             { path: 'productId', select: 'name', populate: { path: 'categoryId' } },
         ])
 
@@ -52,6 +53,7 @@ module.exports = {
         */
 
         // userId verisini req.user'dan al:
+        // yani tokenı zaten olan kullanıcıdan tekrar id isteme query yaparken
         req.body.userId = req.user._id
 
         // Create:
@@ -59,6 +61,9 @@ module.exports = {
         
         // Satınalma sonrası güncel stok adedini arttır:
         // const updateProduct = await Product.updateOne({ _id: req.body.productId }, { $inc: { quantity: req.body.quantity } })
+        // rew.body de yazabiliriz data da yazabiliriz, data değişkeni 60. satırdan geldi
+        //$inc, increment yapar, miktarı ekler, + yazmasak da olur
+        // const updateProduct değişkenine de gerek yok direkt await yazıp da başlayabilirdk
         const updateProduct = await Product.updateOne({ _id: data.productId }, { $inc: { quantity: +data.quantity } })
 
         res.status(201).send({
@@ -119,13 +124,14 @@ module.exports = {
                 }
             }
         */
-
+        // Eğer güncellemede adet/quantity bilgisi varsa;
         if (req.body?.quantity) {
-            // mevcut adet bilgisini al:
+            // mevcut (yani güncellemeden önceki) adet bilgisini al:
+            //1. öncelikle güncellenecek veriyi alalım;
             const currentPurchase = await Purchase.findOne({ _id: req.params.id })
-            // farkı bul:
+            //2. güncelenecek değerden mevcuttaki değeri çıkar, farkı bul:
             const difference = req.body.quantity - currentPurchase.quantity
-            // farkı Product'a kaydet:
+            //3. farkı Product'a kaydet:
             const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: +difference } })
         }
 
