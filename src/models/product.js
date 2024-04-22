@@ -31,6 +31,11 @@ const ProductSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
+    //ERD de yoktu hoca ekledi
+    price: {
+        type: Number,
+        required: true,
+    },
     quantity: {
         type: Number,
         default: 0
