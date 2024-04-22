@@ -55,4 +55,26 @@ const SaleSchema = new mongoose.Schema({
     timestamps: true
 })
 
+/* ------------------------------------------------------- */
+// https://mongoosejs.com/docs/middleware.html
+
+// pre('init') -> Ekrana veriyi vermeden önce veriyi (çıktıyı) manipule edebiliriz:
+// middleware değil, next gerek yok:
+//mongoDB de datalara document deniyor, document ekrana çıkan datayı temsil eder
+SaleSchema.pre('init', function (document) {
+    // console.log(document)
+    //çıkan dataya extraField adında field ekle
+    document.extraField = 'Cohort 15'
+    //__v ekranda gözükmesin mesela
+    document.__v = undefined
+
+    // toLocaleDateString:
+    // https://www.w3schools.com/jsref/jsref_tolocalestring.asp
+    document.createdAtStr = document.createdAt.toLocaleString('tr-tr', { dateStyle: 'full', timeStyle: 'medium' })
+    document.updatedAtStr = document.updatedAt.toLocaleString('tr-tr', { dateStyle: 'full', timeStyle: 'medium' })
+    //eğer normal createdAt i hiç görmek istemiyorsak aşağıdakileri yapabiliriz
+    // document.createdAt = undefined
+    // document.updatedAt = undefined
+})
+
 module.exports = mongoose.model("Sale",SaleSchema)
