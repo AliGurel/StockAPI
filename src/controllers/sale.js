@@ -56,6 +56,7 @@ module.exports = {
         // Güncel ürün bilgisini al:
         const currentProduct = await Product.findOne({ _id: req.body.productId })
 
+        //güncel stok adedi, satış yapılacak adetten fazla mı, yani yeteri kadar stokta malzeme var mı?
         if (currentProduct.quantity >= req.body.quantity) {
  
             // Create:
@@ -70,7 +71,7 @@ module.exports = {
             })
 
         } else {
-
+            // stokta yeteri kadar malzeme yoksa
             res.errorStatusCode = 422
             throw new Error('There is not enough product-quantity for this sale.', { cause: { currentProduct } })
         }
@@ -128,15 +129,19 @@ module.exports = {
         */
 
         if (req.body?.quantity) {
-            // mevcut adet bilgisini al:
+            // mevcut veriyi getir:
             const currentSale = await Sale.findOne({ _id: req.params.id })
             // farkı bul:
             const difference = req.body.quantity - currentSale.quantity
             // farkı Product'a kaydet:
+            //aşağıda 1. parametre önemli, 1. parametre filtreleme alanıdır, yani neyi update edeceğimizi orada 
+            //belirtiriz, id_si mevcut satış yapılmak istenen ürünün id sine eşit olan ürünü getir ve aynı zamanda bu ürünün adeti, difference değişkeninin değerinden büyük olursa getir demek,
+            // burada create bölümündeki if kontrolünün aynısını farklı yöntemle yapmayı gösterdi
             const updateProduct = await Product.updateOne({ _id: currentSale.productId, quantity: { $gte: difference } }, { $inc: { quantity: -difference } })
             // console.log(updateProduct)
 
             // Update işlemi olmamışsa, hata verdir. hata verince sistem devam etmeyecektir:,
+            //modifiedCount, herhangi bir update işlemi yapılıp yapılmadığını gösterir
             if (updateProduct.modifiedCount == 0) {
                 res.errorStatusCode = 422
                 throw new Error('There is not enough product-quantity for this sale.')
@@ -158,10 +163,10 @@ module.exports = {
             #swagger.summary = "Delete Sale"
         */
 
-        // mevcut adet bilgisini al:
+        // mevcut ürün verisini al:
         const currentSale = await Sale.findOne({ _id: req.params.id })
 
-        // Delete:
+        // veriyi sil, Delete:
         const data = await Sale.deleteOne({ _id: req.params.id })
 
         // Adeti Product'dan arttır:

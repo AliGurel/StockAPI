@@ -152,12 +152,13 @@ module.exports = {
         */
 
         // mevcut adet bilgisini al:
+        //1. öncelikle güncellenecek veriyi alalım;
         const currentPurchase = await Purchase.findOne({ _id: req.params.id })
 
-        // Delete:
+        //2. bulduğun veriyi sil, Delete:
         const data = await Purchase.deleteOne({ _id: req.params.id })
 
-        // Adeti Product'dan eksilt:
+        //3. Adeti Product'dan eksilt:
         const updateProduct = await Product.updateOne({ _id: currentPurchase.productId }, { $inc: { quantity: -currentPurchase.quantity } })
 
         res.status(data.deletedCount ? 204 : 404).send({
