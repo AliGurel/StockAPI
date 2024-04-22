@@ -17,14 +17,15 @@ const FirmSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        validate: {
+        
+        /*validate: {
             validator: function (value) {
                 // Use validator.js library for phone number validation
                 return validator.isMobilePhone(value, 'any');
                 // return validator.isMobilePhone(value, 'tr-TR');
             },
             message: 'Invalid phone number'
-        },
+        },*/
     },
     address: {
         type: String,

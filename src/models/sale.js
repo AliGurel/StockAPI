@@ -31,18 +31,24 @@ const SaleSchema = new mongoose.Schema({
         ref: "Product",
         required: true
     },
-    quantity: {
-        type: Number,
-        default: 1,
-    },
     price: {
         type: Number,
         required: true,
     },
-    priceTotal: {
+    quantity: {
         type: Number,
-        // default: function(){ return this.quantity * this.price }, // Create
-        // transform: function(){ return this.quantity * this.price }, // Update
+        default: 1,
+    },
+    amount: {
+        type: Number,
+        // create yaparken bir değer göndermediğimiz zaman SET ÇALIŞMAZ, DEFAULT ÇALIŞIR
+        // create yaparken bir değer gönderdiğimiz zaman da DEFAULT ÇALIŞMAZ, SET ÇALIŞIR
+        // update yaprken her türlü TRANSFORM ÇALIŞIR
+        set: function(){ return this.quantity * this.price }, // Update
+        //alttaki işlemleri controller create de da yapabilirsiniz dedi
+        default: function(){ return this.quantity * this.price }, // Create
+        transform: function(){ return this.quantity * this.price }, // Update
+        
     },
 },{
     collection: "sales",

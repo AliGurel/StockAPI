@@ -1,19 +1,18 @@
 "use strict"
 /* -------------------------------------------------------
-    NODEJS EXPRESS | StockAPI
+    NODEJS EXPRESS | CLARUSWAY FullStack Team
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// routes/purchases:
+// routes/purchase:
 
 const purchase = require('../controllers/purchase')
 const permissions = require('../middlewares/permissions')
 
-router.route('/')
-    .get(permissions.isStaff,purchase.list)
-    .post(permissions.isAdmin,purchase.create) // AllowAny
+// URL: /purchases
 
-router.route('/:id')
+router.route('/(:id)?')
+    .post(permissions.isAdmin, purchase.create)
     .get(permissions.isStaff, purchase.read)
     .put(permissions.isAdmin, purchase.update)
     .patch(permissions.isAdmin, purchase.update)
@@ -21,4 +20,3 @@ router.route('/:id')
 
 /* ------------------------------------------------------- */
 module.exports = router
-
