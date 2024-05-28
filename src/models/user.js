@@ -122,37 +122,43 @@ const UserSchema = new mongoose.Schema({
 //? PRE MIDDLEWARE
 /*
 //https://mongoosejs.com/docs/middleware.html#pre
+
+//hocanın tavsiyesi set ve validasyon işlemini yukarda field da yapmamız mış, pre yi göstermek için burda yapmış, kullanıcağımız ve kullanmayı tavsiye ettiği bi yöntem değilmiş
+
 //pre(save) middleware ler create de çalışır ama updateOne de çalışmazmış
 //bunun için ['save,'updateOne'] kullanıcaz
-//hocanın tavsiyesi set ve validasyon işlemini yukarda field da yapmamız mış, pre yi göstermek için burda yapmış, kullanıcağımız ve kullanmayı tavsiye ettiği bi yöntem değilmiş
 // UserSchema.pre('save', function (next) {
 UserSchema.pre(['save','updateOne'], function (next) {
-    //gelen data this parametresinin içinde
-    // console.log(this)
+    //this kullanacağımız için arrow func kullanmadık normal bir func tanımı yaptık
+    //body den gelen veriler this parametresinin içinde
+    // console.log(this) // body de gelen verileri görelim 
+    
     //şimdilik this içindeki verileri data değişkenine atayıp kontrolleri bu değişken üzerinde yapalım
-    //işimiz bitince this de güncelleyelim
+    //işimiz bitince yapılan güncellemeleri this e yansıtmak zorundayız çünkü middleware bizden this i bekliyor
 
-    // updateOne yaptığımızda, data blgisi _update isimli değişkende geliyor, direkt this de gelmiyor, create yaptığımızda direkt olarak this de geliyordu, o nedenle aşağıdaki kontrolü yaptı
+    // normalde body den gelen veriler this içinde direkt olarak geliyordu, ancak 'save' in yanına 'updateOne' eklediğimiz için artık body den gelen veriler this de değil this._update isimli değişkende geliyor, o nedenle aşağıdaki kontrolü yaptı
+    //this içinde _update diye bir değişken varsa dataya ondaki verileri at, yoksa direkt this dekini at
     const data = this?._update || this
-    //email@domain.com
-    // email varsa kontrol et yoksa direkt true de
+    
+    // gelen body verisinde email varsa kontrol et yoksa direkt true de
     const isEmailValidated = data.email ? /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(data.email) : true
 
     if (isEmailValidated) {
         console.log('Email OK')
+
         if(data?.password) { //data içinde password varsa kontrol et, gönderilmemişse kaale alma
             const isPasswordValidated = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(data.password)
 
             if (isPasswordValidated) {
                 console.log('Password OK')
 
-                data.password = passwordEncrypt(data.password)
-                if (this?._update) {
-                    this._update = data
-                    // this._update.password = data.password 
+                data.password = passwordEncrypt(data.password)//gönderilen pass doğruysa onu şifrele
+                if (this?._update) { //_update varsa this._updateki veriyi data içindeki veriyle güncelle
+                    this._update = data 
+                    // this._update.password = data.password //bu şekilde de diyebilirdik
 
-                } else {
-                    // this = data // izin vermiyor.
+                } else { //upate değil de crate yapıldıysa yani body den gelen veriler direkt this parametresi içindeyse, data içindeki passwordu al this içindeki passworde eşitle
+                    // this = data // izin vermiyor.O nedenle yukardaki gibi yapamıyoruz direk, içindeki parametreyi güncelleyebiliyoruz
                     this.password = data.password
                 }
                 //? ShortHand:

@@ -65,7 +65,7 @@ module.exports = {
                 }
             }
         */
-        // user kendini staff veya admin yapamasın
+        // normal user kendini staff veya admin yapamasın
         req.body.isStaff = false
         req.body.isAdmin = false
 
@@ -84,7 +84,7 @@ module.exports = {
 
         res.status(201).send({
             error: false,
-            token: tokenData.token,
+            token: tokenData.token,//create olan kullanıcının token ini de gönderiyoruz
             data
         })
     },
