@@ -61,6 +61,7 @@ module.exports = {
         */
 
         if(req.params?._id) {
+            //Tek Kayıt listeleme
             //url de id varsa tek kaydı listele
             const data = await Category.findOne({_id: req.params.id})
 
@@ -69,7 +70,8 @@ module.exports = {
                 data
             })
         }else{
-            //id yoksa tüm kayıtları listelei yukarıdaki list ile aynı içerik bu
+            //Çoklu kayıt listeleme
+            //id yoksa tüm kayıtları listele, yukarıdaki list ile aynı içerik bu, artk yukardaki listi kullanmayabiliriz
             const data = await res.getModelList(Category)
         
             res.status(200).send({
@@ -114,7 +116,7 @@ module.exports = {
         const data = await Category.deleteOne({ _id: req.params.id })
 
         res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,//silme işlemi gerçekleşmemişse true versin
+            error: !data.deletedCount,//silme işlemi gerçekleşmemişse true verir
             data
         })
 

@@ -141,7 +141,7 @@ module.exports = {
             customFilter = { _id: req.user._id }
         }
 
-        // Admin olmayan, isStaff ve isAdmin durumunu değiştiremez.
+        // Admin olmayan, isActive, isStaff ve isAdmin durumunu değiştiremez.
         if (!req.user.isAdmin) {
             delete req.body.isActive
             delete req.body.isStaff
