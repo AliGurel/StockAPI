@@ -72,7 +72,7 @@ module.exports = {
         const data = await User.create(req.body)
 
         /* AUTO LOGIN */
-        //kullanıcı create edildiğ zaman token ı da otomatik oluşsun
+        //kullanıcı create edildiği zaman token ı da otomatik oluşsun
         //yani otomatik login olsun
         const tokenData = await Token.create({
             userId: data._id,
