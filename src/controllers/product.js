@@ -22,7 +22,7 @@ module.exports = {
                 </ul>
             `
         */
-        // aradaki 2. parametre filtreleme parametresi, o nedenle boi obje bıraktı
+        // aradaki 2. parametre filtreleme parametresi, o nedenle boş obje bıraktı
         // 3. parametre yani ['categoryId', 'brandId'] populate edilecek alanlar
         const data = await res.getModelList(Product, {}, ['categoryId', 'brandId'])
 
