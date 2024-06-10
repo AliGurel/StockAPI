@@ -25,7 +25,7 @@ const FirmSchema = new mongoose.Schema({
                 // return validator.isMobilePhone(value, 'tr-TR');
             },
             message: 'Invalid phone number'
-        },*/
+        },*/ 
     },
     address: {
         type: String,

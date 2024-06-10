@@ -53,7 +53,7 @@ const PurchaseSchema = new mongoose.Schema({
         // create yaparken bir değer gönderdiğimiz zaman da DEFAULT ÇALIŞMAZ, SET ÇALIŞIR
         // update yaprken her türlü TRANSFORM ÇALIŞIR
         set: function(){ return this.quantity * this.price }, // Update
-        //alttaki işlemleri controller create de da yapabilirsiniz dedi
+        //alttaki işlemleri controller create de da yapabilirsiniz dedi, biz burda yapmayı tercih ettik
         default: function(){ return this.quantity * this.price }, // Create
         transform: function(){ return this.quantity * this.price }, // Update
         

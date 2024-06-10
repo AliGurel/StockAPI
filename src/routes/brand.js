@@ -11,6 +11,7 @@ const permissions = require('../middlewares/permissions')
 
 // URL: /brands
 
+//Kısaltılmış Route yapısı;
 router.route('/(:id)?')
     .post(permissions.isAdmin, brand.create)
     .get(permissions.isStaff, brand.read)
