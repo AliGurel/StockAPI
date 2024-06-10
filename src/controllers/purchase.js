@@ -52,7 +52,7 @@ module.exports = {
             }
         */
 
-        // userId verisini req.user'dan al:
+        // login olan kullanıcının userId verisini req.user'dan al:
         // yani tokenı zaten olan kullanıcıdan tekrar id isteme query yaparken
         req.body.userId = req.user._id
 
