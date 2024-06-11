@@ -134,12 +134,13 @@ module.exports = {
             // farkı bul:
             const difference = req.body.quantity - currentSale.quantity
             // farkı Product'a kaydet:
-            //aşağıda 1. parametre önemli, 1. parametre filtreleme alanıdır, yani neyi update edeceğimizi orada 
-            //belirtiriz, id_si mevcut satış yapılmak istenen ürünün id sine eşit olan ürünü getir ve aynı zamanda bu ürünün adeti, difference değişkeninin değerinden büyük olursa getir demek,
-            // burada create bölümündeki if kontrolünün aynısını farklı yöntemle yapmayı gösterdi
+            //aşağıda 1. parametre önemli, 1. parametre filtreleme alanıdır, yani neyi update edeceğimizi orada filtreleriz
+            //yani, id_si mevcut satış yapılmak istenen ürünün id sine eşit olan ürünü getir ve aynı zamanda bu ürünün adeti, difference değişkeninin değerinden büyük olursa getir demek,
+            // burada create bölümündeki if kontrolünün aynısını farklı yöntemle yapmayı gösterdi, bu yöntemi kullan
             const updateProduct = await Product.updateOne({ _id: currentSale.productId, quantity: { $gte: difference } }, { $inc: { quantity: -difference } })
             // console.log(updateProduct)
-
+            //update işlemi olunca updateProduct değişkenine modifiedCount değişkeni gelir
+            // update olmamışsa modifiedCount=0 olur
             // Update işlemi olmamışsa, hata verdir. hata verince sistem devam etmeyecektir:,
             //modifiedCount, herhangi bir update işlemi yapılıp yapılmadığını gösterir
             if (updateProduct.modifiedCount == 0) {
