@@ -59,12 +59,13 @@ const SaleSchema = new mongoose.Schema({
 // https://mongoosejs.com/docs/middleware.html
 
 // pre('init') -> Ekrana veriyi vermeden önce veriyi (çıktıyı) manipule edebiliriz:
+// pre(init) populate den önce çalışır
 // middleware değil, next gerek yok:
 //mongoDB de datalara document deniyor, document ekrana çıkan datayı temsil eder
 SaleSchema.pre('init', function (document) {
     // console.log(document)
     //çıkan dataya extraField adında field ekle
-    document.extraField = 'Cohort 15'
+    document.extraField = 'Deneme 15'
     //__v ekranda gözükmesin mesela
     document.__v = undefined
 
